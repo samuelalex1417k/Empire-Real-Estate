@@ -1,0 +1,328 @@
+'use client'
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation'
+import { LuLogIn, LuLogOut, LuPhone } from 'react-icons/lu';
+import { motion } from 'framer-motion';
+import { FaUser } from 'react-icons/fa';
+import { jwtDecode } from 'jwt-decode';
+
+
+export default function Navbar(props) {
+  const { navClass, navJustify } = props;
+  const [isMenu, setIsMenu] = useState(false);
+  const [manu, setManu] = useState('');
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setManu(pathname);
+    function windowScroll() {
+      const navbar = document.getElementById("topnav");
+      const scrolled = window.scrollY >= 50;
+      setIsScrolled(scrolled);
+      if (navbar) {
+        navbar.classList.toggle('nav-sticky', scrolled);
+      }
+    }
+    window.addEventListener("scroll", windowScroll);
+    windowScroll();
+    return () => { window.removeEventListener('scroll', windowScroll); };
+  }, [pathname]);
+
+  
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+    try {
+      const decoded = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+
+      if (decoded.exp && decoded.exp > currentTime) {
+        setIsAuthenticated(true);
+      } else {
+        
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        setIsAuthenticated(false);
+      }
+    } catch (err) {
+      
+      console.error("Invalid token:", err);
+      localStorage.removeItem('token');
+      localStorage.removeItem('username');
+      setIsAuthenticated(false);
+    }
+  }
+  }, []);
+
+  const activeClass = "text-[#947e03]";
+  const defaultClass = isScrolled ? "text-black" : "text-white";
+
+  async function handleSubmit(e) {
+  e.preventDefault();
+  setErrorMsg('');
+  setLoading(true);
+
+  const form = e.target;
+  const username = form.username?.value?.trim();
+  const password = form.password?.value?.trim();
+
+  
+  const email = !isLogin ? form.email?.value?.trim() : '';
+  const confirm_Password = !isLogin ? form.confirm_password?.value?.trim() : '';
+
+  
+  console.log('username:', username, 'email:', email, 'password:', password, 'confirm:', confirm_Password);
+
+  
+  if (!username || !password || (!isLogin && (!email || !confirm_Password))) {
+    setErrorMsg('Please fill in all required fields.');
+    setLoading(false);
+    return;
+  }
+
+  if (!isLogin && password !== confirm_Password) {
+    setErrorMsg('Passwords do not match.');
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const url = isLogin ? 'http://127.0.0.1:8000/api/token/' : 'http://127.0.0.1:8000/users/register/';
+    const payload = isLogin
+      ? { username, password }
+      : { username, email, password, confirm_password: confirm_Password };
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+    console.log('Register error details:', data);
+
+    if (!res.ok) {
+      const err = data;
+      const msg = err.message || err.detail || err.username?.[0] || 'Authentication failed';
+     setErrorMsg(msg);
+     setLoading(false);
+       return;
+    }
+
+    if (isLogin) {
+  localStorage.setItem('token', data.access);
+
+  
+try {
+  const decoded = jwtDecode(data.access); 
+  const usernameFromToken = decoded.username || decoded.user_name || decoded.user_id || '';
+  localStorage.setItem('username', usernameFromToken);
+} catch (error) {
+  console.error('JWT decode error:', error);
+  localStorage.removeItem('username'); 
+}
+
+  setIsAuthenticated(true);
+  setShowLoginModal(false);
+}
+
+   else {
+      setIsLogin(true);
+      setErrorMsg('Registration successful! Please login.');
+    }
+  } catch (err) {
+    setErrorMsg('Network error. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+}
+
+
+  function handleLogout() {
+     const confirmed = window.confirm("Are you sure you want to log out?");
+  if (confirmed) {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+  }
+}
+
+  return (
+    <nav id="topnav" className={`defaultscroll ${navClass === "nav-light" ? '' : navClass === "nav-sticky" ? 'nav-white' : ''}`}>
+      <div className="container relative">
+        {
+          navClass === "nav-light" ? (
+            <Link className="logo flex items-center" href="/">
+              <span className="inline-block dark:hidden">
+                <Image src="/images/2-removebg-preview.png" className="l-dark absolute  top-1 right-280" width={115} height={23} alt="Justice RealEstate Logo Dark" />
+                <Image src="/images/1-removebg-preview.png" className="l-light absolute top-1 right-280" width={117} height={23} alt="Justice RealEstate Logo Light" />
+              </span>
+              <Image src="/images/1-removebg-preview.png" width={115} height={23} className="hidden dark:inline-block absolute top-1 right-280" alt="Justice RealEstate Logo Dark Mode" />
+            </Link>
+          )
+            :
+            (
+              <Link className="logo" href="/">
+                <Image src="/images/2-removebg-preview.png" width={115} height={23} className="inline-block dark:hidden absolute top-1  right-280" alt="Justice RealEstate Logo Dark" />
+                <Image src="/images/1-removebg-preview.png" width={117} height={23} className="hidden dark:inline-block absolute top-1 right-280" alt="Justice RealEstate Logo Light" />
+              </Link>
+            )
+        }
+
+        <ul className={`buy-button list-none space-x-1 mb-0`} >
+          <li className="inline mb-0">
+  <a
+    href="tel:+251962493083" 
+    className="size-9 inline-flex items-center justify-center tracking-wide align-middle duration-300 text-base text-center rounded-full bg-[#947e03]/5 hover:bg-[#947e03] border border-[#947e03] hover:border-[#947e03] text-[#947e03] hover:text-white transition-all"
+  >
+    <LuPhone className="size-4" />
+  </a>
+</li>
+
+
+{isAuthenticated && (
+  <li className="inline ps-1 mb-0">
+    <Link
+      href="/user-dashboard"
+      className="size-9 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-base text-center rounded-full bg-[#947e03] hover:bg-[#ffffff] hover:text-[#947e03] border border-[#947e03] hover:border-[#947e03] text-white"
+    >
+      <FaUser className="size-4"/>
+          </Link>
+  </li>
+)}
+
+          <li className="inline ps-1 mb-0">
+            {!isAuthenticated ? (
+              <button onClick={() => { setShowLoginModal(true); setIsLogin(true); setErrorMsg(''); }} className="size-9 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-base text-center rounded-full bg-[#947e03] hover:bg-[#ffffff] hover:text-[#947e03] border border-[#947e03] hover:border-[#947e03] text-white">
+                <LuLogIn className="size-4" />
+              </button>
+            ) : (
+              <button onClick={handleLogout} className="size-9 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-base text-center rounded-full bg-[#947e03] hover:bg-[#ffffff] hover:text-[#947e03] border border-[#947e03] hover:border-[#947e03] text-white">
+                <LuLogOut className="size-4"/>
+              </button>
+            )}
+          </li>
+
+        </ul>
+
+        <div id="navigation" style={{ display: isMenu ? 'block' : 'none' }}>
+          <ul className={`navigation-menu ${navClass} ${navJustify}`}>
+            <li><Link href="/"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/" ? activeClass : defaultClass}`}>HOME</span></Link></li>
+            <li><Link href="/property-listing"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/property-listing" ? activeClass : defaultClass}`}>Properties</span></Link></li>
+            <li><Link href="/index-blog"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/index-blog" ? activeClass : defaultClass}`}>Blog</span></Link></li>
+            <li><Link href="/page-aboutus"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/page-aboutus" ? activeClass : defaultClass}`}>More</span></Link></li>
+            <li><Link href="/contact-one"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/contact-one" ? activeClass : defaultClass}`}>Contact us</span></Link></li>
+          </ul>
+        </div>
+      </div>
+
+     {showLoginModal && (
+  <motion.div
+    className="fixed inset-0 z-50 flex items-center justify-center bg-transparent bg-opacity-50"
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.9 }}
+    transition={{ duration: 0.3 }}
+  >
+    <motion.div
+      className="flex w-150 h-125 max-w-4xl bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg relative"
+      initial={{ x: 200, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: 200, opacity: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      
+      <div
+        className="hidden md:flex w-1/2 bg-cover bg-center"
+        style={{ backgroundImage: `url('/images/real/property/single/4.jpg')` }}
+      >
+        <div className="bg-[#ffffff44] w-full">
+          <div className="bg-[#ffffffb5] mt-55">
+            <h2 className="text-2xl text-[#947e03] text-center font-bold">
+              {isLogin ? "Welcome Back!" : "Join Us!"}
+            </h2>
+            <p className="text-sm text-black text-center">
+              {isLogin
+                ? "Login to explore more."
+                : "Create an account to get started with us."}
+            </p>
+          </div>
+        </div>
+      </div>
+
+     
+      <div className="w-full md:w-1/2 p-6 relative flex flex-col justify-between">
+         <button
+    onClick={() => setShowLoginModal(false)}
+    className="absolute top-2 right-4 text-2xl text-black dark:text-white"
+  >
+          &times;
+  </button>
+
+        <div>
+    <h2 className="text-2xl font-bold mb-4 text-center text-[#947e03]">
+      <b>{isLogin ? 'Login' : 'Sign Up'}</b>
+    </h2>
+
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <input type="text" name="username" id="username" className="w-full h-7 mt-1 mb-2 px-3 py-2 border rounded-2xl font-normal bg-white dark:bg-gray-800 text-black dark:text-white" placeholder='username' />
+      </div>
+
+      {!isLogin && (
+        <div>
+          <input type="email" name="email" id="email" className="w-full h-7 mt-1 mb-2 px-3 py-2 border rounded-2xl font-normal bg-white dark:bg-gray-800 text-black dark:text-white" placeholder='Email' />
+        </div>
+      )}
+
+      <div>
+        <input type="password" name="password" id="password" className="w-full h-7 mt-1 mb-2 px-3 py-2 border rounded-2xl font-normal bg-white dark:bg-gray-800 text-black dark:text-white" placeholder='password' />
+      </div>
+
+      {!isLogin && (
+        <div>
+          <input type="password" name="confirm_password" id="confirm_password" className="w-full h-7 mt-1 mb-2 px-3 py-2 border rounded-2xl font-normal bg-white dark:bg-gray-800 text-black dark:text-white" placeholder='confirm password' />
+        </div>
+      )}
+
+      {errorMsg && <p className="text-green-400 text-sm">{errorMsg}</p>}
+
+      <button type="submit" disabled={loading} className="w-30 mt-1 ml-17 py-2 bg-[#947e03] text-white rounded-md">
+        {loading ? (isLogin ? 'Logging in...' : 'Registering...') : (isLogin ? 'Login' : 'Sign Up')}
+      </button>
+    </form>
+  </div>
+
+          <div className="text-center text-sm text-gray-600 mt-4">
+    {isLogin ? "Don’t have an account?" : "Already have an account?"}{' '}
+    <button
+      type="button"
+      className="text-[#947e03] underline"
+      onClick={() => {
+        setIsLogin(!isLogin);
+        setErrorMsg('');
+      }}
+    >
+      {isLogin ? "Sign up" : "Login"}
+    </button>
+
+
+        </div>
+      </div>
+    </motion.div>
+  </motion.div>
+)}
+
+
+    </nav>
+  );
+}
