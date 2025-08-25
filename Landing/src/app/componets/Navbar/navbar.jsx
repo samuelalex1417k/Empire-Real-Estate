@@ -97,7 +97,7 @@ export default function Navbar(props) {
   }
 
   try {
-    const url = isLogin ? 'http://127.0.0.1:8000/api/token/' : 'http://127.0.0.1:8000/users/register/';
+    const url = isLogin ? 'http://127.0.0.1:8000/api/token/' : 'http://127.0.0.1:8000/api/users/register/';
     const payload = isLogin
       ? { username, password }
       : { username, email, password, confirm_password: confirm_Password };
@@ -217,10 +217,10 @@ try {
         <div id="navigation" style={{ display: isMenu ? 'block' : 'none' }}>
           <ul className={`navigation-menu ${navClass} ${navJustify}`}>
             <li><Link href="/"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/" ? activeClass : defaultClass}`}>HOME</span></Link></li>
-            <li><Link href="/property-listing"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/property-listing" ? activeClass : defaultClass}`}>Properties</span></Link></li>
-            <li><Link href="/index-blog"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/index-blog" ? activeClass : defaultClass}`}>Blog</span></Link></li>
-            <li><Link href="/page-aboutus"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/page-aboutus" ? activeClass : defaultClass}`}>More</span></Link></li>
-            <li><Link href="/contact-one"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/contact-one" ? activeClass : defaultClass}`}>Contact us</span></Link></li>
+            <li><Link href="/listing"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/listing" ? activeClass : defaultClass}`}>Properties</span></Link></li>
+            <li><Link href="/blog"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/blog" ? activeClass : defaultClass}`}>Blog</span></Link></li>
+            <li><Link href="/aboutUs"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/aboutUs" ? activeClass : defaultClass}`}>More</span></Link></li>
+            <li><Link href="/contact"><span className={`transition-colors duration-200 hover:text-[#947e03] ${manu === "/contact" ? activeClass : defaultClass}`}>Contact us</span></Link></li>
           </ul>
         </div>
       </div>

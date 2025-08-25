@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import '../../../../node_modules/tiny-slider/dist/tiny-slider.css';
 
 const TinySlider = dynamic(() => import('tiny-slider-react'), { ssr: false });
-import { realEstateServices } from "../../Data/dataTwo";
+import { realEstateServices } from "@/app/Data/data";
 
 export default function Clients() {
     let settings = {

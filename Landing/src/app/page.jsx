@@ -9,7 +9,7 @@ import ListingCards from "./componets/real-estate/ListingCards";
 import Form from "./componets/real-estate/form";
 import Counter from "./componets/real-estate/counter";
 import Clients from "./componets/real-estate/clients";
-import { workData } from "./Data/dataThree";
+import { workData } from "./Data/data";
 import { FaArrowRight } from "react-icons/fa";
 import * as Icon from "react-feather";
 import { motion } from "framer-motion";
@@ -145,15 +145,7 @@ export default function Page() {
             />
             Your browser does not support the video tag.
           </video>
-          {/* <Image
-            src="/images/real/about.jpg"
-            width={0}
-            height={0}
-            sizes="100vw"
-            style={{ width: "100%", height: "auto" }}
-            className="shadow-md rounded-t-full rounded-md"
-            alt=""
-          /> */}
+        
         </div>
       </div>
     </motion.div>

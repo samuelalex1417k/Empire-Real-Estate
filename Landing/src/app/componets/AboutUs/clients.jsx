@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const TinySlider = dynamic(()=>import('tiny-slider-react'),{ssr: false,});
 import '../../../../node_modules/tiny-slider/dist/tiny-slider.css'
-import { aboutServices } from '@/app/Data/dataTwo';
+import { aboutServices } from '@/app/Data/data';
 
 export default function Clients(){
     let settings = {

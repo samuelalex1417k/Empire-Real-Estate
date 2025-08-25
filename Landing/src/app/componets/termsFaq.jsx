@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 
-import { accordionData } from '../Data/dataTwo';
+import { accordionData } from '../Data/data';
 
 export default function TermsFaq(){
     const [activeIndex, setActiveIndex] = useState(0);

@@ -11,8 +11,12 @@ import React, {
 import Link from "next/link";
 import Image from "next/image";
 import Navbar from '../componets/Navbar/navbar';
+import EcommerceNavbar from '../componets/Navbar/ecommerceNavbar';
 import Switcher from '../componets/switcher';
+import MobileApp from '../componets/mobileApp';
+import ShopFooter from '../componets/Footer/shopFooter';
 import Footer from '../componets/Footer/footer';
+import AccountTab from '../componets/accountTab';
 import * as Icon from 'react-feather';
 
 import { MdKeyboardArrowRight } from 'react-icons/md';
@@ -148,28 +152,6 @@ function ProfileContent() {
   return (
     <>
       <Navbar navClass="nav-light" />
-      <section className="relative table w-full py-20 lg:py-24 bg-[#947e0399] dark:bg-slate-800">
-        <div className="container relative">
-          <div className="grid grid-cols-1 mt-14">
-            <h3 className="text-3xl leading-normal font-semibold">My Account</h3>
-          </div>
-
-          <div className="relative mt-3">
-            <ul className="tracking-[0.5px] mb-0 inline-flex space-x-1">
-              <li className="inline-block uppercase text-[13px] font-bold duration-500 ease-in-out hover:text-[#947e03]">
-                <Link href="/index-shop">Techwind</Link>
-              </li>
-              <li className="inline-block text-base text-slate-950 dark:text-white mx-0.5">
-                <MdKeyboardArrowRight className="text-xl" />
-              </li>
-              <li className="inline-block uppercase text-[13px] font-bold duration-500 ease-in-out text-[#947e03]" aria-current="page">
-                My Account
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-      
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-12 gap-6 mt-25">
           {/* Sidebar */}
@@ -195,7 +177,7 @@ function ProfileContent() {
               <div className="space-y-4">
                 <Detail icon={<Icon.User />} title="Full Name" content={user.full_name || "N/A"} />
                 <Detail icon={<Icon.User />} title="Username" content={user.username} />
-                <Detail icon={<Icon.Mail />} title="Email" content={user.email} />
+                {/* <Detail icon={<Icon.Mail />} title="Email" content={user.email} /> */}
                 <Detail icon={<Icon.Phone />} title="Phone" content={user.phone_number || "Not provided"} />
                 <Detail icon={<Icon.Shield />} title="Role" content={user.role ? user.role.toUpperCase() : "ADMIN"} />
               </div>
