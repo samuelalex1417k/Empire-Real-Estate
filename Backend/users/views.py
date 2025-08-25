@@ -35,9 +35,12 @@ class RegisterView(APIView):
         if User.objects.filter(username=username).exists():
             return Response({"message": "Username already taken."}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = User.objects.create_user(username=username, email=email, password=password)
-        # Create related UserProfile automatically
-        UserProfile.objects.create(user=user, registered_via_api=True)
+        try:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            UserProfile.objects.get_or_create(user=user, defaults={"registered_via_api": True})
+        except Exception as e:
+            return Response({"message": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         return Response({"message": "User registered successfully."}, status=status.HTTP_201_CREATED)
 
 

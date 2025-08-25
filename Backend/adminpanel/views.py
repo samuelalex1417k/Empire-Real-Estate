@@ -13,7 +13,10 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 
 from .serializers import ProfileSerializer
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth import get_user_model
+from .models import Profile
 
 class AdminTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -79,18 +82,22 @@ def api_login(request):
 @permission_classes([IsAuthenticated])
 @parser_classes([MultiPartParser, FormParser])
 def api_profile(request):
-    try:
-        profile = request.user.admin_profile
-    except:
-        return Response({"error": "Profile not found."}, status=status.HTTP_404_NOT_FOUND)
-
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    
     if request.method == 'GET':
         serializer = ProfileSerializer(profile, context={'request': request})
         return Response(serializer.data)
-
+    
     elif request.method == 'PATCH':
         serializer = ProfileSerializer(profile, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+User = get_user_model()
+
+@receiver(post_save, sender=User)
+def create_profile_for_admin(sender, instance, created, **kwargs):
+    if created and instance.is_staff:
+        Profile.objects.create(user=instance)

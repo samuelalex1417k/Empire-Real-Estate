@@ -5,6 +5,7 @@ class SubscriberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscriber
         fields = ['id', 'email', 'subscribed_at']
+        ref_name = "BlogSubscriber"
 
 class BlogSerializer(serializers.ModelSerializer):
     class Meta:
