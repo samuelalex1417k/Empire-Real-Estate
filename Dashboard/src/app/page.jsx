@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import Switcher from "./components/switcher";
-import BackButton from "./components/back-button";
+
 
 export default function Page() {
   const [email, setEmail] = useState("");
@@ -33,7 +33,7 @@ export default function Page() {
       
       localStorage.setItem("token", data.access);  
       localStorage.setItem("refresh", data.refresh);
-      window.location.href = "/Dashboard";
+      window.location.href = "/dashboard";
     } else {
       setError(data.detail || "Login failed");
     }
@@ -145,7 +145,7 @@ export default function Page() {
          <div className="absolute bottom-8 right-200 w-60 h-60 bg-[#947e0330] rounded-full blur-1xl z-0"></div>
       </section>
       <Switcher />
-      <BackButton />
+      
     </>
   );
 }

@@ -9,31 +9,50 @@ import { FiUser, FiCamera } from "react-icons/fi";
 
 const UserContext = createContext();
 
-function UserProvider({ children }) {
+export function useUser() {
+  return useContext(UserContext);
+}
+
+export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     async function fetchUser() {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        setError("No token found. Please log in.");
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
       try {
-        const token = localStorage.getItem("token");
-        if (!token) {
+        const res = await fetch("http://localhost:8000/api/adminpanel/profile/", {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (res.status === 401) {
+          setError("Unauthorized. Please log in again.");
           setUser(null);
           setLoading(false);
           return;
         }
 
-        const res = await fetch("http://localhost:8000/api/adminpanel/profile/", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!res.ok) throw new Error("Failed to fetch user");
+        if (!res.ok) {
+          throw new Error(`Failed to fetch user. Status: ${res.status}`);
+        }
 
         const data = await res.json();
         setUser(data);
       } catch (err) {
-        setError(err.message || "Unknown error");
+        setError(err.message || "Unknown error occurred");
+        setUser(null);
       } finally {
         setLoading(false);
       }
@@ -43,7 +62,7 @@ function UserProvider({ children }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, loading, error, setUser }}>
+    <UserContext.Provider value={{ user, setUser, loading, error }}>
       {children}
     </UserContext.Provider>
   );
@@ -54,9 +73,7 @@ function ProfileImageUpload() {
   const fileInputRef = useRef(null);
   const [uploading, setUploading] = useState(false);
 
-  const handleClick = () => {
-    fileInputRef.current.click();
-  };
+  const handleClick = () => fileInputRef.current.click();
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
@@ -70,9 +87,7 @@ function ProfileImageUpload() {
       const token = localStorage.getItem("token");
       const res = await fetch("http://localhost:8000/api/adminpanel/profile/", {
         method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
@@ -88,14 +103,12 @@ function ProfileImageUpload() {
   };
 
   const profilePicSrc = user?.profile_picture
-    ? (user.profile_picture.startsWith("http")
-        ? user.profile_picture
-        : `http://localhost:8000${user.profile_picture}`)
+    ? (user.profile_picture.startsWith("http") ? user.profile_picture : `http://localhost:8000${user.profile_picture}`)
     : null;
 
   return (
     <div 
-      className="relative ml-19 w-24 h-24 rounded-full ring-4 ring-[#fffffff] dark:ring-slate-800 shadow overflow-hidden cursor-pointer group"
+      className="relative w-24 h-24 rounded-full ring-4 ring-white dark:ring-slate-800 shadow overflow-hidden cursor-pointer group mx-auto"
       onClick={handleClick}
       title="Click to change profile picture"
     >
@@ -106,7 +119,8 @@ function ProfileImageUpload() {
           <FiUser className="text-4xl text-gray-500 dark:text-white" />
         </div>
       )}
-      <div className="absolute h-10 mt-15 inset-0 bg-[#00000046] bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ">
+
+      <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <FiCamera size={24} className="text-white" />
       </div>
 
@@ -136,38 +150,34 @@ function ProfileContent() {
 
   return (
     <Wrapper>
-      <div className="container-fluid relative px-3">
-        <div className="layout-specing">
-          <div className="grid md:grid-cols-12 grid-cols-1">
-            <div className="xl:col-span-3 lg:col-span-4 md:col-span-4 mt-6">
-              <div className="p-6 relative rounded-md shadow-sm dark:shadow-gray-700 bg-white dark:bg-slate-900">
-                <div className="profile-pic text-center mb-5">
-                  <ProfileImageUpload />
-                  <div className="mt-4">
-                    <h5 className="text-lg font-semibold">{user.full_name || user.user.username}</h5>
-                    <p className="text-slate-400">{user.user.email}</p>
-                    <p className="text-[#947e03] text-sm">{user.role ? user.role.toUpperCase() : "Admin"}</p>
-                  </div>
-                </div>
+      <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-12 gap-6 mt-25">
+          {/* Sidebar */}
+          <div className="md:col-span-4 xl:col-span-3">
+            <div className="p-6 rounded-md shadow-sm dark:shadow-gray-700 bg-white dark:bg-slate-900 text-center">
+              <ProfileImageUpload />
+              <div className="mt-4">
+                <h5 className="text-lg font-semibold">{user.full_name || user.user.username}</h5>
+                <p className="text-slate-400">{user.user.email}</p>
+                <p className="text-[#947e03] text-sm">{user.role ? user.role.toUpperCase() : "Admin"}</p>
               </div>
             </div>
+          </div>
 
-            <div className="xl:col-span-9 lg:col-span-8 md:col-span-8 mt-6">
-              <div className="grid grid-cols-1 gap-6">
-                <div className="p-8 w-210 ml-10 rounded-md shadow-sm dark:shadow-[#947e03] bg-[#947e03] dark:bg-slate-900">
-                  <p className="text-white mt-3"><b>Welcome {user.user.username}!</b></p>
-                </div>
+          {/* Main Content */}
+          <div className="md:col-span-8 xl:col-span-9 space-y-6">
+            <div className="p-6 rounded-md shadow-sm bg-[#947e03] text-white dark:bg-slate-900">
+              <p><b>Welcome {user.user.username}!</b></p>
+            </div>
 
-                <div className="p-6 ml-10 rounded-md shadow-sm dark:shadow-gray-700 bg-white dark:bg-slate-900 h-fit">
-                  <h5 className="text-xl font-semibold">Personal Details :</h5>
-                  <div className="mt-6 space-y-4">
-                    <Detail icon={<Icon.User />} title="Full Name" content={user.full_name || "N/A"} />
-                    <Detail icon={<Icon.User />} title="Username" content={user.user.username} />
-                    <Detail icon={<Icon.Mail />} title="Email" content={user.user.email} />
-                    <Detail icon={<Icon.Phone />} title="Phone" content={user.phone_number || "Not provided"} />
-                    <Detail icon={<Icon.Shield />} title="Role" content={user.role ? user.role.toUpperCase() : "ADMIN"} />
-                  </div>
-                </div>
+            <div className="p-6 rounded-md shadow-sm bg-white dark:bg-slate-900">
+              <h5 className="text-xl font-semibold mb-4">Personal Details:</h5>
+              <div className="space-y-4">
+                <Detail icon={<Icon.User />} title="Full Name" content={user.full_name || "N/A"} />
+                <Detail icon={<Icon.User />} title="Username" content={user.user.username} />
+                <Detail icon={<Icon.Mail />} title="Email" content={user.user.email} />
+                <Detail icon={<Icon.Phone />} title="Phone" content={user.phone_number || "Not provided"} />
+                <Detail icon={<Icon.Shield />} title="Role" content={user.role ? user.role.toUpperCase() : "ADMIN"} />
               </div>
             </div>
           </div>

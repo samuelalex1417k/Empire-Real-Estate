@@ -6,7 +6,7 @@ import Image from "next/image";
 import Footer from "../components/footer";
 import Switcher from "../components/switcher";
 import Wrapper from "../components/wrapper";
-import AddBlog from "../blog-add/page";
+import AddBlog from "../blogAdd/page";
 
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { FiArrowRight } from "react-icons/fi";
@@ -100,7 +100,7 @@ export default function Page() {
 
   // Navigate to update/edit page
   const handleUpdate = (id) => {
-    window.location.href = `/blog-detail/${id}`;
+    window.location.href = `/blogUpdate/${id}`;
   };
 
   return (
@@ -125,7 +125,7 @@ export default function Page() {
                 </li>
               </ul>
               </div>
-            <Link href="/blog-add" className="inline-flex items-center space-x-2 bg-[#947e03] text-white px-4 py-2 rounded hover:bg-[#826d02] transition">
+            <Link href="/blogAdd" className="inline-flex items-center space-x-2 bg-[#947e03] text-white px-4 py-2 rounded hover:bg-[#826d02] transition">
             <span className="text-lg">+</span>
             <span>Add Blogs</span>
             </Link>
@@ -138,7 +138,7 @@ export default function Page() {
           ) : blogs.length === 0 ? (
             <p className="mt-6 text-center">No blogs found.</p>
           ) : (
-            <div className="grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 mt-6 gap-6">
+            <div className="grid sm:grid-cols-1 md:grid-cols-3   gap-6 mt-6">
               {currentBlogs.map((item, index) => (
                 <div className="group relative" key={item.id || index}>
                   <div className="relative overflow-hidden shadow-sm dark:shadow-gray-700 group-hover:shadow-lg rounded-md duration-500">

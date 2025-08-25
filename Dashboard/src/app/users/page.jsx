@@ -1,7 +1,6 @@
 'use client';
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 import Footer from "../components/footer";
 import Switcher from "../components/switcher";
@@ -12,27 +11,37 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 export default function Page() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetch users on mount
   useEffect(() => {
     async function fetchUsers() {
       try {
+        const token = localStorage.getItem("token");
+        if (!token) throw new Error("No token found. Please login.");
+
         const res = await fetch('http://127.0.0.1:8000/api/users/', {
           headers: {
             'Content-Type': 'application/json',
-           
-           'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Authorization': `Bearer ${token}`,
           }
         });
-        if (!res.ok) throw new Error('Failed to fetch users');
+
+        if (!res.ok) {
+          const errData = await res.json();
+          throw new Error(errData.detail || "Failed to fetch users");
+        }
+
         const data = await res.json();
-        setUsers(data); // Expecting an array of users
-      } catch (error) {
-        console.error(error);
+        // Ensure data is an array
+        setUsers(Array.isArray(data) ? data : data.results || []);
+      } catch (err) {
+        console.error("Fetch users error:", err);
+        setError(err.message || "Failed to fetch users");
       } finally {
         setLoading(false);
       }
     }
+
     fetchUsers();
   }, []);
 
@@ -42,11 +51,16 @@ export default function Page() {
         <div className="layout-specing">
           <div className="md:flex justify-between items-center">
             <h5 className="text-lg font-semibold">Registered Users</h5>
-
             <ul className="tracking-[0.5px] inline-flex items-center sm:mt-0 mt-3">
-              <li className="inline-block capitalize text-[14px] font-bold duration-500 dark:text-white/70 hover:text-[#947e03] dark:hover:text-white"><Link href="/Dashboard">Dashboard</Link></li>
-              <li className="inline-block text-base text-slate-950 dark:text-white/70 mx-0.5 ltr:rotate-0 rtl:rotate-180"><MdKeyboardArrowRight/></li>
-              <li className="inline-block capitalize text-[14px] font-bold text-[#947e03] dark:text-white" aria-current="page">Users</li>
+              <li className="inline-block capitalize text-[14px] font-bold duration-500 dark:text-white/70 hover:text-[#947e03] dark:hover:text-white">
+                <Link href="/Dashboard">Dashboard</Link>
+              </li>
+              <li className="inline-block text-base text-slate-950 dark:text-white/70 mx-0.5">
+                <MdKeyboardArrowRight/>
+              </li>
+              <li className="inline-block capitalize text-[14px] font-bold text-[#947e03] dark:text-white" aria-current="page">
+                Users
+              </li>
             </ul>
           </div>
 
@@ -67,13 +81,17 @@ export default function Page() {
                     <tr>
                       <td colSpan="5" className="text-center p-4">Loading users...</td>
                     </tr>
+                  ) : error ? (
+                    <tr>
+                      <td colSpan="5" className="text-center p-4 text-red-600">{error}</td>
+                    </tr>
                   ) : users.length === 0 ? (
                     <tr>
                       <td colSpan="5" className="text-center p-4">No users found.</td>
                     </tr>
                   ) : (
-                    users.map((user, index) => (
-                      <tr key={index}>
+                    users.map((user) => (
+                      <tr key={user.id}>
                         <td className="text-start border-t border-gray-100 dark:border-gray-800 p-4">#{user.id}</td>
                         <td className="text-start border-t border-gray-100 dark:border-gray-800 p-4">{user.username}</td>
                         <td className="text-center border-t border-gray-100 dark:border-gray-800 p-4">{user.email}</td>
@@ -108,4 +126,3 @@ export default function Page() {
     </Wrapper>
   );
 }
-

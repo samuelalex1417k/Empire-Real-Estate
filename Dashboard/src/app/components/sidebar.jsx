@@ -20,7 +20,7 @@ export default function Sidebar() {
     <nav className="sidebar-wrapper sidebar-dark">
       {/* Top Logo Section */}
       <div className="dark:bg-gray-900 bg-[#ffffff] h-25 flex   items-center px-6">
-        <Link href="/profile">
+        <Link href="/dashboard">
           <Image
             src="/images/2-removebg-preview copy.png"
             width={130}
@@ -34,9 +34,9 @@ export default function Sidebar() {
       <div className="sidebar-content dark:bg-gray-900 bg-[#ffffff]">
         <SimpleBarReact style={{ height: "calc(100vh - 70px)" }}>
           <ul className="sidebar-menu border-t border-[#947e03] mt-1 px-4 space-y-1 pt-4">
-             <li><Link href="/Dashboard" className={linkClass("/Dashboard")}><span className="text-black">Dashboard</span></Link></li>
+             <li><Link href="/dashboard" className={linkClass("/dashboard")}><span className="text-black">Dashboard</span></Link></li>
             <li><Link href="/profile" className={linkClass("/profile")}><span className="text-black"> Profile</span></Link></li>
-            <li><Link href="/Listing" className={linkClass("/Listing")}><span className="text-black">Listing</span></Link></li>
+            <li><Link href="/listing" className={linkClass("/listing")}><span className="text-black">Listing</span></Link></li>
             <li><Link href="/blog" className={linkClass("/blog")}><span className="text-black">Blogs</span></Link></li>
             <li><Link href="/newsletter" className={linkClass("/newsletter")}><span className="text-black">Newsletter</span></Link></li>
             <li><Link href="/users" className={linkClass("/users")}><span className="text-black">users</span></Link></li>
