@@ -15,13 +15,14 @@ export default function Page() {
   const [error, setError] = useState(null);
   const [visibleCount, setVisibleCount] = useState(9);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 
   const loaderRef = useRef(null);
 
   useEffect(() => {
     const fetchListings = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/listing/");
+        const res = await fetch(`${API_URL}/listing/`);
         if (!res.ok) throw new Error("Failed to fetch listings");
         const data = await res.json();
         setListings(data);

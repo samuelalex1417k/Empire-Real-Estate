@@ -22,6 +22,7 @@ export default function Page() {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 
   function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,7 +34,7 @@ export default function Page() {
     setMessage(null);
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/contact/', {
+      const res = await fetch(`${API_URL}/contact/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

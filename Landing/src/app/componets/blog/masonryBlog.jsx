@@ -9,12 +9,13 @@ export default function Blogcards() {
   const [blogs, setBlogs] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null); // For filtering
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 
   // Fetch blogs from backend
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/blogs/");
+        const res = await fetch(`${API_URL}/blogs/`);
         const data = await res.json();
         setBlogs(data);
         setFilteredData(data); // initialize filteredData with all blogs

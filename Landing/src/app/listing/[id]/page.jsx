@@ -19,11 +19,12 @@ export default function Page() {
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 
   useEffect(() => {
     const fetchProperty = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/listing/${id}/`);
+        const res = await fetch(`${API_URL}/listing/${id}/`);
         if (!res.ok) throw new Error("Failed to fetch property");
         const data = await res.json();
         console.log("data",data)

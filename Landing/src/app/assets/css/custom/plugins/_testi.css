@@ -5,9 +5,9 @@
 .tns-nav {
     @apply text-center mt-3;
     button {
-        @apply rounded-[3px] bg-indigo-600/30 duration-500 border-0 m-1 p-[5px];
+        @apply rounded-[3px] bg-[#947e03]/30 duration-500 border-0 m-1 p-[5px];
         &.tns-nav-active {
-            @apply bg-indigo-600 rotate-[45deg];
+            @apply bg-[#947e03] rotate-[45deg];
         }
     }
 }
@@ -19,7 +19,7 @@
         @apply absolute top-2/4 -translate-y-2/4 text-base size-8 rounded-full bg-white dark:bg-slate-900 text-slate-900 dark:text-white border-0 duration-500 z-10 shadow-md dark:shadow-gray-800;
 
         &:hover {
-            @apply bg-indigo-600 text-white;
+            @apply bg-[#947e03] text-white;
         }
     }
     button[data-controls="prev"] {

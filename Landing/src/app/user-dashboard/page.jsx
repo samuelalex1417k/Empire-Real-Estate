@@ -24,6 +24,7 @@ function UserProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 
   useEffect(() => {
     async function fetchUser() {
@@ -35,7 +36,7 @@ function UserProvider({ children }) {
           return;
         }
 
-        const res = await fetch("http://localhost:8000/api/users/profile/", {
+        const res = await fetch(`${API_URL}/users/profile/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

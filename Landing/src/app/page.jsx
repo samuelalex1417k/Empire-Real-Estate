@@ -87,7 +87,7 @@ export default function Page() {
                   </motion.h1>
 
                   <motion.p
-                    className="text-white/70 text-xl max-w-xl"
+                    className="text-white/70 text-xl max-w-xl mx-auto"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, amount: 0.3 }}
@@ -103,9 +103,7 @@ export default function Page() {
         </div>
       </section>
 
-      
       <section className="relative md:pb-24 pb-16">
-       
         <motion.div
           className="container relative"
           initial="hidden"
@@ -120,63 +118,58 @@ export default function Page() {
           </div>
         </motion.div>
 
-        
-       <motion.div
-  className="container relative md:mt-24 mt-16"
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: false, amount: 0.3 }}
->
-  <div className="grid md:grid-cols-12 grid-cols-1 items-center gap-[30px]">
-    
-    <motion.div className="md:col-span-5" variants={imageVariants}>
-      <div className="relative">
-        <div className="p-5 shadow-sm dark:shadow-gray-800 w-90 mr-20  h-120  bg-gray-50 dark:bg-slate-800 rounded-4xl">
-          <video
-            className="shadow-lg   absolute top-0 left-0 w-90 h-full object-cover z-0 rounded-4xl"
-            autoPlay
-            muted
-            loop
-            playsInline
-          >
-            <source
-              src="/images/7578545-uhd_3840_2160_30fps.mp4"
-              type="video/mp4"
-            />
-            Your browser does not support the video tag.
-          </video>
-        
-        </div>
-      </div>
-    </motion.div>
+        <motion.div
+          className="container relative md:mt-24 mt-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+        >
+          <div className="grid md:grid-cols-12 grid-cols-1 items-center gap-[30px]">
+            <motion.div className="md:col-span-5" variants={imageVariants}>
+              <div className="relative">
+                <div className="p-5 shadow-sm dark:shadow-gray-800 w-full h-120 bg-gray-50 dark:bg-slate-800 rounded-4xl">
+                  <video
+                    className="shadow-lg absolute top-0 left-0 w-full h-full object-cover z-0 rounded-4xl"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  >
+                    <source
+                      src="/images/7578545-uhd_3840_2160_30fps.mp4"
+                      type="video/mp4"
+                    />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </motion.div>
 
-    
-    <motion.div className="md:col-span-7" variants={textVariants}>
-      <div className="lg:ms-4">
-        <h4 className="mb-6 md:text-3xl text-2xl font-semibold">
-          Efficiency. Transparency. <br /> Control.
-        </h4>
-        <p className="text-slate-400 max-w-xl">
-          Techwind Homes developed a platform for the Real Estate marketplace
-          that allows buyers and sellers to easily execute a transaction on
-          their own. The platform drives efficiency, cost transparency and
-          control into the hands of the consumers. Techwind Homes is Real
-          Estate Redefined.
-        </p>
-        <div className="mt-4">
-          <Link
-            href="#"
-            className="py-2 px-5 inline-block font-semibold tracking-wide border align-middle duration-500 text-base text-center bg-[#947e03] hover:bg-[#947e10] border-[#947e03] hover:border-[#947e10] text-white rounded-md mt-3"
-          >
-            Learn More
-          </Link>
-        </div>
-      </div>
-    </motion.div>
-  </div>
-</motion.div>
+            <motion.div className="md:col-span-7" variants={textVariants}>
+              <div className="lg:ms-4">
+                <h4 className="mb-6 md:text-3xl text-2xl font-semibold">
+                  Efficiency. Transparency. <br /> Control.
+                </h4>
+                <p className="text-slate-400 max-w-xl">
+                  Techwind Homes developed a platform for the Real Estate marketplace
+                  that allows buyers and sellers to easily execute a transaction on
+                  their own. The platform drives efficiency, cost transparency and
+                  control into the hands of the consumers. Techwind Homes is Real
+                  Estate Redefined.
+                </p>
+                <div className="mt-4">
+                  <Link
+                    href="#"
+                    className="py-2 px-5 inline-block font-semibold tracking-wide border align-middle duration-500 text-base text-center bg-[#947e03] hover:bg-[#947e10] border-[#947e03] hover:border-[#947e10] text-white rounded-md mt-3"
+                  >
+                    Learn More
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
 
-        
         <motion.div
           className="container relative md:mt-24 mt-16"
           initial="hidden"
@@ -219,7 +212,6 @@ export default function Page() {
           </div>
         </motion.div>
 
-        
         <motion.div
           className="container relative md:mt-24 mt-16"
           initial="hidden"
@@ -249,7 +241,6 @@ export default function Page() {
           </div>
         </motion.div>
 
-        
         <motion.div
           className="container relative md:mt-24 mt-16 lg:pt-24 pt-16"
           initial="hidden"
@@ -293,20 +284,20 @@ export default function Page() {
           </div>
           <Clients />
         </motion.div>
- <motion.div
+
+        <motion.div
           className="container relative md:py-24 py-16"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.3 }}
           variants={itemVariants}
         >
-        <GetInTuct />
+          <GetInTuct />
         </motion.div>
       </section>
 
       <CompanyLogo />
       <Footer />
-      
     </>
   );
 }

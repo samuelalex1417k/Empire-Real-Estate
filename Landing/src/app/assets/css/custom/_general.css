@@ -13,7 +13,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 ::selection {
-    @apply bg-indigo-600/90 text-white;
+    @apply bg-[#947e03]/90 text-white;
 }
 
 .css-13cymwt-control{

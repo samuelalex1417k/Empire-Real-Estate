@@ -20,7 +20,7 @@
 .qs-squares .qs-square:not(.qs-empty):not(.qs-disabled):not(.qs-day):not(.qs-active):hover,
 .qs-squares .qs-square.qs-current {
     text-decoration: none;
-    @apply bg-indigo-600 text-white rounded-[30px] font-semibold;
+    @apply bg-[#947e03] text-white rounded-[30px] font-semibold;
 }
 .qs-squares .qs-day {
     @apply font-normal text-slate-900 dark:text-white;

@@ -25,14 +25,14 @@
           li{
             &.active {
               > a {
-                @apply !text-indigo-600 dark:!text-indigo-600;
+                @apply !text-[#947e03] dark:!text-[#947e03];
               }
             }
           }
         }
         &.active {
           .menu-arrow {
-            @apply border-indigo-600 dark:border-indigo-600;
+            @apply border-[#947e03] dark:border-[#947e03];
           }
         }
       }
@@ -44,20 +44,20 @@
         .has-submenu {
           &:hover {
             /* .submenu-arrow {
-              @apply border-indigo-600 dark:border-indigo-600;
+              @apply border-[#947e03] dark:border-[#947e03];
             } */
             > .submenu-arrow {
-              @apply border-indigo-600 dark:border-indigo-600;
+              @apply border-[#947e03] dark:border-[#947e03];
             }
           }
           .submenu {
             .has-submenu{
               &:hover {
                 .submenu-arrow {
-                  @apply border-indigo-600 dark:border-indigo-600;
+                  @apply border-[#947e03] dark:border-[#947e03];
                 }
                 > .submenu-arrow {
-                  @apply border-indigo-600 dark:border-indigo-600;
+                  @apply border-[#947e03] dark:border-[#947e03];
                 }
               }
             }
@@ -99,7 +99,7 @@
             @apply w-full top-[6px] -rotate-[45deg];
           }
           &:hover {
-            @apply bg-indigo-600;
+            @apply bg-[#947e03];
           }
         }
       }
@@ -158,13 +158,13 @@
           @apply !block !text-slate-900 dark:!text-white !text-[13px] !bg-transparent !font-bold !tracking-[1px] !leading-6 !uppercase !px-[14px];
           &:hover, 
           &:active {
-            @apply text-indigo-600;
+            @apply text-[#947e03];
           }
         }
         &:hover, 
         &.active{
           > a {
-            @apply !text-indigo-600 dark:!text-indigo-600;
+            @apply !text-[#947e03] dark:!text-[#947e03];
           }
         }
         .submenu.megamenu {
@@ -203,10 +203,10 @@
           &:hover, 
           &.active{
             > a {
-              @apply text-indigo-600;
+              @apply text-[#947e03];
             }
             > .menu-arrow {
-              @apply border-indigo-600 dark:border-indigo-600;
+              @apply border-[#947e03] dark:border-[#947e03];
             }
           }
         }
@@ -234,20 +234,20 @@
             }
             &.active {
               > a {
-                @apply !text-indigo-600 dark:!text-indigo-600;
+                @apply !text-[#947e03] dark:!text-[#947e03];
               }
             }
             &:hover, 
             &.active{
               > .menu-arrow {
-                @apply !border-indigo-600;
+                @apply !border-[#947e03];
               }
             }
             
             &:hover, 
             &.active {
               > a {
-                @apply !text-indigo-600 dark:!text-indigo-600;
+                @apply !text-[#947e03] dark:!text-[#947e03];
               }
             }
           }
@@ -291,20 +291,20 @@
             }
             &.active {
               > a {
-                @apply !text-indigo-600 dark:!text-indigo-600;
+                @apply !text-[#947e03] dark:!text-[#947e03];
               }
             }
             &:hover, 
             &.active{
               > .menu-arrow {
-                @apply !border-indigo-600;
+                @apply !border-[#947e03];
               }
             }
             
             &:hover, 
             &.active {
               > a {
-                @apply !text-indigo-600 dark:!text-indigo-600;
+                @apply !text-[#947e03] dark:!text-[#947e03];
               }
             }
           }
@@ -422,7 +422,7 @@
               transition: all 0.3s;
               @apply block py-[10px] px-5 clear-both whitespace-nowrap text-[11px] uppercase tracking-[0.04em] font-bold text-slate-900 dark:text-white leading-[17px];
               &:hover {
-                @apply !text-indigo-600 dark:!text-indigo-600;
+                @apply !text-[#947e03] dark:!text-[#947e03];
               }
             }
             ul {
@@ -449,13 +449,13 @@
         }
         &:hover {
           > .menu-arrow {
-            @apply border-indigo-600 dark:border-indigo-600;
+            @apply border-[#947e03] dark:border-[#947e03];
           }
         }
         &:hover, 
         &.active{
           > a {
-            @apply !text-indigo-600 dark:!text-indigo-600;
+            @apply !text-[#947e03] dark:!text-[#947e03];
           }
         }
         &.last-elements{
@@ -595,7 +595,7 @@
         > a:hover,
         .submenu li a:hover,
         &.has-submenu.open > a {
-          @apply text-indigo-600;
+          @apply text-[#947e03];
         }
       }
     }
@@ -626,7 +626,7 @@
       }
       &.active {
         a {
-          @apply text-indigo-600;
+          @apply text-[#947e03];
         }
       }
     }
@@ -722,27 +722,27 @@
       > .navbar-item {
         .navbar-link {
           &.active{
-            @apply text-indigo-600;
+            @apply text-[#947e03];
           }
         }
         &:hover,
         &.active {
           .navbar-link {
-            @apply text-indigo-600;
+            @apply text-[#947e03];
           }
         }
     }
     li{
       &.active {
         a {
-          @apply text-indigo-600;
+          @apply text-[#947e03];
         }
       }
       &.account-menu {
         &.active,
         &:hover{
           .navbar-link {
-            @apply !text-indigo-600 dark:!text-white;
+            @apply !text-[#947e03] dark:!text-white;
           }
         }
       }

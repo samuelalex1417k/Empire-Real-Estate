@@ -12,8 +12,9 @@ import BlogUserDetail from "../../componets/blogUserDetail";
 import {MdKeyboardArrowRight} from "react-icons/md"
 
 export default async function Page({ params }) {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
   // Fetch blog data from backend API by id
-  const res = await fetch(`http://localhost:8000/api/newsletters/${params.id}`, { next: { revalidate: 10 } });
+  const res = await fetch(`${API_URL}/newsletters/${params.id}`, { next: { revalidate: 10 } });
   const blogDatas = await res.json();
 
   return (

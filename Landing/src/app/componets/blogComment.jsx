@@ -16,6 +16,7 @@ export default function BlogComment({ blogId }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 
     setUserToken(token);
     setFormData((prev) => ({
@@ -25,7 +26,7 @@ export default function BlogComment({ blogId }) {
 
     if (!blogId) return;
 
-    fetch(`http://localhost:8000/api/blogs/${blogId}/comments/`)
+    fetch(`${API_URL}/blogs/${blogId}/comments/`)
       .then((res) => res.json())
       .then((data) => setComments(data))
       .catch(() => setComments([]));

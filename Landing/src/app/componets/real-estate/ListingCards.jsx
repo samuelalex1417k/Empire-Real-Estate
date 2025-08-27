@@ -7,9 +7,10 @@ import { motion } from "framer-motion";
 
 export default function ListingCards() {
   const [listings, setListings] = useState([]);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/listing/")
+    fetch(`${API_URL}/listing/`)
       .then((res) => res.json())
       .then(setListings)
       .catch(() => alert("Failed to fetch listings"));
